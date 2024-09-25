@@ -1,18 +1,64 @@
-const ProductTypeEnum = Object.freeze({
-    DEFAULT: 'pokemon.sprites.front_default',
-    // BACK: pokemon.sprites.back_default,
-    // BACK_SHINY: pokemon.sprites.back_shiny,
-});
 
-console.log(ProductTypeEnum.DEFAULT)
 console.log(data);
 
 //You can start simple and just render a single 
 //pokemon card from the first element
 console.log(data[0]);
 
-const pokemonCards = document.querySelector(".cards")
-let pictureAngle
+const pokemonCards = document.querySelector(".cards");
+const filterDropdown = document.querySelector('.filter--dropdown');
+let imageAngle = 1;
+
+function renderFilterDropdown() {
+    filterDropdown.innerHTML = '';
+  
+    const label = document.createElement('label');
+    label.for = 'images'
+    label.innerText = 'Image angle:'
+  
+    const select = document.createElement('select');
+    select.id = 'selectTEST'
+    select.name = 'images'
+  
+    // OPTIONS
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 1;
+    defaultOption.innerText = 'Default'
+    select.appendChild(defaultOption)
+
+    const frontShiny = document.createElement('option');
+    frontShiny.value = 2;
+    frontShiny.innerText = 'Front shiny'
+    select.appendChild(frontShiny)
+  
+    const back = document.createElement('option');
+    back.value = 3;
+    back.innerText = 'Back'
+    select.appendChild(back)
+
+    const backShiny = document.createElement('option');
+    backShiny.value = 4;
+    backShiny.innerText = 'Back shiny'
+    select.appendChild(backShiny)
+  
+    const applyFilterButton = document.createElement('button');
+    applyFilterButton.addEventListener('click', applyFilterOption);
+    applyFilterButton.innerText = 'Apply'
+  
+    filterDropdown.appendChild(label);
+    filterDropdown.appendChild(select);
+    filterDropdown.appendChild(applyFilterButton);
+  }
+
+function applyFilterOption() {
+    selectElement = document.querySelector('#selectTEST');
+    imageAngle = selectElement.value;
+
+    console.log(selectElement.value)
+    console.log(imageAngle)
+
+    renderPokemonCards();
+}
 
 function renderPokemonCards() {
     /*
@@ -47,8 +93,11 @@ function renderPokemonCards() {
 
         const img = document.createElement('img');
         img.width = '256';
-        img.className = 'card--img'
-        img.src = pokemon.sprites.front_default;
+        img.className = 'card--img';
+        if (imageAngle == 1) img.src = pokemon.sprites.front_default;
+        if (imageAngle == 2) img.src = pokemon.sprites.front_shiny;
+        if (imageAngle == 3) img.src = pokemon.sprites.back_default;
+        if (imageAngle == 4) img.src = pokemon.sprites.back_shiny;
         li.appendChild(img);
 
         const ul = document.createElement('ul');
@@ -64,4 +113,5 @@ function renderPokemonCards() {
     });
 }
 
+renderFilterDropdown();
 renderPokemonCards();
